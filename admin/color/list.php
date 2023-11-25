@@ -15,8 +15,8 @@
                         <tr>
                             <th>Check</th>
                             <th>STT</th>
-                            <th>Name12</th>
-                            <th>Chức Năng12</th>
+                            <th>Name</th>
+                            <th>Chức Năng</th>
 
                         </tr>
                     </thead>
