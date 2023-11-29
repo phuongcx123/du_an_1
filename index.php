@@ -1,10 +1,13 @@
 
     <?php
+    session_start();
+    ob_start();
     include "model/pdo.php";
     include "model/sanpham.php";
     include "model/danhmuc.php";
-    // include "model/binhluan.php";
-    // include "model/taikhoan.php";
+    include "model/size.php";
+    include "model/binhluan.php";
+    include "model/taikhoan.php";
     include "view/include/header.php";
     if (isset($_GET['act']) && ($_GET['act'])) {
         $act = $_GET['act'];
@@ -17,8 +20,14 @@
                 break;
             case 'chitietSP':
                 $id = $_GET['id_sp'];
+                $id_dm = $_GET['id_dm'];
+                $load_color = load_color_ct($id);
+                $sanpham =  load_sanpham_all_dm($id_dm);
+                $binhluan =  LoadAll_BL_user($id);
+                updat_view($id);
                 $sp_img = load_sanpham_one($id);
                 $img = load_img($id);
+                $load_size = load_size_ct($id);
                 include "view/sanpham/sanphamct.php";
                 break;
             case 'thanhtoan':
@@ -40,19 +49,121 @@
                 include "view/cart.php";
                 break;
             case 'login':
+                if (isset($_POST['login']) && ($_POST['login'] != "")) {
+                    $username = $_POST['username'];
+                    $password = $_POST['password'];
+                    $checkuser = checkuser($username, $password);
+                    if (is_array($checkuser)) {
+                        $_SESSION['username'] = $checkuser;
+                        if ($_SESSION['username']['lock'] == 1) {
+                            if (isset($_SESSION["username"])) {
+                                unset($_SESSION["username"]);
+                            }
+                            echo '<script>alert("Tài Khoản của bạn đã bị khóa")</script>';
+                            echo "  <script>window.location.href ='?act=login'</script> ";
+                        } else {
+
+                            echo "  <script>window.location.href ='index.php'</script> ";
+                        }
+                    } else {
+                        echo '<script>alert("Tên đăng nhập hoặc mật khẩu không đúng")</script>';
+                        echo "  <script>window.location.href ='?act=login'</script> ";
+                    }
+                }
                 if (isset($_POST['dangky']) && ($_POST['dangky'] != "")) {
                     $email = $_POST['email'];
                     $name = $_POST['name_tk'];
                     $pswd = $_POST['pass'];
+                    $pswd1 = $_POST['laimk'];
                     $full_name = $_POST['full_name'];
                     $diachi = $_POST['dia_chi'];
-                    // $lastInsertedId = insert_taikhoan($email, $name, $pswd, $full_name, $diachi);
-                    $thongbao = "<script>alert('Đăng Ký Thành Công') </script>";
+                    if ($pswd !=  $pswd) {
+                        echo "  <script>alert('Đăng Ký Không Thành Công') </script> ";
+                    } else {
+                        dangky_TK($name, $pswd, $full_name, $email, $diachi);
+                        echo "  <script>alert('Đăng Ký Thành Công Thành Công') </script> ";
+                    }
                 }
                 include "view/Taikhoan/login.php";
                 break;
             case 'contact':
                 include "view/contact.php";
+                break;
+            case 'thongtin':
+                $id = $_SESSION['username']['id_tk'];
+                $tk = Load_one_TK($id);
+                include "view/Taikhoan/thongtin.php";
+                break;
+            case 'capnhattk':
+                if (isset($_POST['gui']) && ($_POST['gui'] != "")) {
+
+                    $full_name = $_POST['full-name'];
+                    $sdt = $_POST['sdt'];
+                    $diachi = $_POST['diachi'];
+                    $email = $_POST['email'];
+                    $file = $_FILES['img_tk'];
+                    $id = $_POST['id'];
+                    $img = $_POST['img_tk'];
+                    if ($file['size'] > 0) {
+                        $img = $file['name'];
+                        move_uploaded_file($file['tmp_name'], "assets/uploads/" . $img);
+                    }
+
+                    // echo $img;
+                    upload_tk_user($id, $sdt, $full_name, $diachi, $email, $img);
+                    echo '<script>alert("Cập nhật Thành Công")</script>';
+                    echo "  <script>window.location.href ='index.php'</script> ";
+                }
+                break;
+            case 'dangxuat':
+                if (isset($_SESSION["username"])) {
+                    unset($_SESSION["username"]);
+                }
+                echo "  <script>window.location.href ='index.php'</script> ";
+                break;
+
+            case 'binhluan':
+                if (isset($_POST['gui']) && ($_POST['gui'] != "")) {
+                    $name = $_POST['binhluan'];
+                    $id_tk = $_POST['id_tk'];
+                    $id_sp = $_POST['id'];
+                    $id_dm = $_POST['id_dm'];
+                    date_default_timezone_set('Asia/Ho_Chi_Minh');
+                    $ngayGioHienTai = date('Y-m-d H:i:s');
+                    add_bl($name, $id_tk, $id_sp, $ngayGioHienTai);
+                    echo "  <script>window.location.href ='?act=chitietSP&id_sp=$id_sp&id_dm=$id_dm'</script> ";
+                }
+
+                break;
+            case 'quenmk':
+               
+                include "./view/taikhoan/quenmk.php";
+                break;
+            case 'doimk':
+                if (isset($_POST['submit'])) {
+                    $id = $_SESSION['username']['id_tk']; // Lấy ID từ session
+                    $password = $_POST['password'];
+                    $newPassword = $_POST['newPassword'];
+                    $confirmPassword = $_POST['confirmPassword'];
+
+                    if ($newPassword === $confirmPassword) {
+                        // Gọi hàm để cập nhật mật khẩu trong session
+                        changepassword($id, $newPassword);
+                        //unset($_SESSION["username"]);
+                        // Sau khi cập nhật session, bạn có thể tiến hành cập nhật trong cơ sở dữ liệu.
+                        // Cần sử dụng câu lệnh SQL UPDATE để cập nhật mật khẩu trong bảng taikhoan
+
+                        // Ví dụ:
+                        // $sql = "UPDATE taikhoan SET pass = '$newPassword' WHERE id_tk = $id";
+                        // pdo_execute($sql);
+
+                        echo '<script>alert("Bạn đã đổi mật khẩu thành công")</script>';
+                        header("refresh:0.08;url=?act=login");
+                    } else {
+                        echo '<script>alert("Xác nhận mật khẩu không khớp")</script>';
+                    }
+                }
+                include "view/Taikhoan/doimk.php";
                 break;
             default:
                 break;

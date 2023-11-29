@@ -29,7 +29,7 @@ if (isset($_SESSION['username']) && ($_SESSION['username']['chucvu'] == 1)) {
         break;
       case 'sanpham_danmuc':
         $id = $_GET['iddm'];
-        $sanpham = load_sanpham_all_dm($id) ; 
+        $sanpham = load_sanpham_all_dm($id);
         include("sanpham/list_danhmuc.php");
         break;
       case 'xoadm':
@@ -72,11 +72,16 @@ if (isset($_SESSION['username']) && ($_SESSION['username']['chucvu'] == 1)) {
         $sanpham =   load_sanpham_all();
         include("sanpham/list.php");
         break;
+      case 'editbt':
+        $sanpham =   load_sanpham_all();
+        include("sanpham/list.php");
+        break;
       case 'addsp':
         if (isset($_POST['gui']) && $_POST['gui'] != "") {
           $name = $_POST['name'];
           $giam_gia = $_POST['giam_gia'];
           $mota = $_POST['mo_ta'];
+          $mota_n = $_POST['mo_ta_n'];
           $date = $_POST['date'];
           $gioitinh = $_POST['gt'];
           $dm = $_POST['dm'];
@@ -85,7 +90,7 @@ if (isset($_SESSION['username']) && ($_SESSION['username']['chucvu'] == 1)) {
           $img = $file['name'];
 
           move_uploaded_file($file['tmp_name'], "../assets/uploads/" . $img);
-          $idspnew =   add_sanpham($name, $giam_gia, $mota, $date, $gioitinh, $dm, $gia, $img);
+          $idspnew =   add_sanpham($name, $giam_gia, $mota, $date, $gioitinh, $dm, $gia, $img, $mota_n);
           if (isset($_FILES['img_mota'])) {
             $file_mt = $_FILES['img_mota'];
             $img_mt = $file_mt['name'];
@@ -119,6 +124,7 @@ if (isset($_SESSION['username']) && ($_SESSION['username']['chucvu'] == 1)) {
           $name = $_POST['name'];
           $giam_gia = $_POST['giam_gia'];
           $mota = $_POST['mo_ta'];
+          $mota_n = $_POST['mo_ta_n'];
           $date = $_POST['date'];
           $gioitinh = $_POST['gt'];
           $dm = $_POST['dm'];
@@ -141,7 +147,7 @@ if (isset($_SESSION['username']) && ($_SESSION['username']['chucvu'] == 1)) {
               }
             }
           }
-          up_sanpham($name, $id, $img, $gioitinh,  $mota, $giam_gia, $gia, $date, $dm);
+          up_sanpham($name, $id, $img, $gioitinh,  $mota, $giam_gia, $gia, $date, $dm, $mota_n);
           echo "  <script>alert('Thành Công') </script> ";
           echo "  <script>window.location.href ='index.php?act=listsp'</script> ";
         }
@@ -155,6 +161,33 @@ if (isset($_SESSION['username']) && ($_SESSION['username']['chucvu'] == 1)) {
           echo "  <script>alert('Thêm Thành Công') </script> ";
           echo "  <script>window.location.href ='index.php?act=editsp&idsp=$id'</script> ";
         }
+
+        break;
+      case 'suabt':
+        $id = $_GET["idbt"];
+        $size = LoadAll_size();
+        $color = LoadAll_color();
+        $btsp =    load_one_bt($id);
+        if (isset($_POST['bienthe']) && $_POST['bienthe'] != "") {
+          $id_bt = $_POST["id_sp"];
+          $id = $_POST["id"];
+          $size = $_POST["kich_co"];
+          $color = $_POST["mau_sac"];
+          $soluong = $_POST["soluong"];
+          // add_spbienthe($id, $size, $color, $soluong);
+          //echo $id , $size ; 
+          sua_spbienthe($id_bt, $size, $color, $soluong);
+          echo "  <script>alert('Thành Công') </script> ";
+          echo "  <script>window.location.href ='index.php?act=editsp&idsp=$id'</script> ";
+        }
+        include("sanpham/suabt.php");
+        break;
+      case 'xoabt':
+        $id = $_GET['idsp'];
+        $idbt = $_GET['idbt'];
+        xoa_spbienthe($idbt);
+        echo "  <script>alert('Thành Công') </script> ";
+        echo "  <script>window.location.href ='index.php?act=editsp&idsp=$id'</script> ";
         break;
         //Bình luận 
       case 'binhluan':
@@ -256,12 +289,14 @@ if (isset($_SESSION['username']) && ($_SESSION['username']['chucvu'] == 1)) {
       case "addcolor":
         if (isset($_POST['gui']) && $_POST['gui'] != "") {
           $name = $_POST['name'];
+          $mau = $_POST['mau'];
           if ($name == null) {
             $isthongbao = 0;
             $thongbao = 'Không thành công';
           } else {
             $isthongbao = 1;
-            add_color($name);
+            add_color($name, $mau);
+            //echo $mau ;
             $thongbao = ' Thêm thành công';
           }
         }
@@ -282,7 +317,8 @@ if (isset($_SESSION['username']) && ($_SESSION['username']['chucvu'] == 1)) {
         if (isset($_POST['gui']) && $_POST['gui'] != "") {
           $idcolor = $_POST['id'];
           $name = $_POST['name'];
-          edit_color($idcolor, $name);
+          $mau = $_POST['mau'];
+          edit_color($idcolor, $name, $mau);
           echo "  <script>alert('Cập Nhật Thành Công') </script> ";
           echo "  <script>window.location.href ='index.php?act=listcolor'</script> ";
         }
@@ -326,7 +362,7 @@ if (isset($_SESSION['username']) && ($_SESSION['username']['chucvu'] == 1)) {
         break;
       case 'bieudo1':
         $listthongke = loadall_thongke();
-       $thongke =  thongke_ngay() ; 
+        $thongke =  thongke_ngay();
         include "thongke/list.php";
         break;
       default:

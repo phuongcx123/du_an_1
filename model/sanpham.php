@@ -1,8 +1,8 @@
 <?php
-function add_sanpham($name, $giam_gia, $mota, $date, $gioitinh, $dm, $gia, $img)
+function add_sanpham($name, $giam_gia, $mota, $date, $gioitinh, $dm, $gia, $img, $mota_n)
 {
-  $sql = " INSERT INTO sanpham (id_sp, name_sp, image_sp, giam_gia, gia, mo_ta, ngay_nhap, view, gioi_tinh, id_dm) 
-  VALUES (NULL, '$name', '$img', '$giam_gia', '$gia', '$mota', '$date', '0', '$gioitinh', '$dm') ";
+  $sql = " INSERT INTO sanpham (id_sp, name_sp,mo_ngan, image_sp, giam_gia, gia, mo_ta, ngay_nhap, view, gioi_tinh, id_dm) 
+  VALUES (NULL, '$name',$mota_n, '$img', '$giam_gia', '$gia', '$mota', '$date', '0', '$gioitinh', '$dm') ";
   $lastInsertedId = pdo_execute_return_lastInsertId($sql);
   return $lastInsertedId;
 }
@@ -28,9 +28,9 @@ function load_sanpham_one($id)
   $sp =   pdo_query_one($sql);
   return $sp;
 }
-function up_sanpham($name, $id, $img, $gioitinh,  $mota, $giam_gia, $gia, $date, $dm)
+function up_sanpham($name, $id, $img, $gioitinh,  $mota, $giam_gia, $gia, $date, $dm, $mota_n)
 {
-  $sql = "UPDATE sanpham SET name_sp='$name',image_sp='$img',giam_gia=' $giam_gia',gia='$gia',mo_ta=' $mota',ngay_nhap='$date',gioi_tinh='$gioitinh',id_dm='$dm' WHERE id_sp='$id'";
+  $sql = "UPDATE sanpham SET name_sp='$name',mo_ngan='$mota_n' ,image_sp='$img',giam_gia=' $giam_gia',gia='$gia',mo_ta='$mota',ngay_nhap='$date',gioi_tinh='$gioitinh',id_dm='$dm' WHERE id_sp='$id'";
   pdo_execute($sql);
 }
 
@@ -67,3 +67,40 @@ function load_sanphambt_all($id)
 //   $sp_img = pdo_query_one($sql);
 //   return $sp_img;
 // }
+
+
+/// load size bên user 
+function load_size_ct($id)
+{
+  $sql = "SELECT * FROM `sanpham_bienthe` LEFT JOIN size ON sanpham_bienthe.id_size = size.id_size WHERE id_sp = $id GROUP BY sanpham_bienthe.id_size;";
+  $sp_img = pdo_query($sql);
+  return $sp_img;
+}
+function updat_view($id)
+{
+  $sql = "UPDATE `sanpham` SET view = view+1 WHERE id_sp = $id";
+  pdo_execute($sql);
+}
+function sua_spbienthe($id, $size, $color, $soluong)
+{
+  $sql = "UPDATE `sanpham_bienthe` SET `id_color`=' $color',`id_size`='$size',`soluong`='$soluong' WHERE `id_spbt`='$id' ";
+  pdo_execute($sql);
+}
+function load_one_bt($id)
+{
+  $sql = "SELECT * FROM `sanpham_bienthe` WHERE `id_spbt`='$id'";
+  $bt =  pdo_query_one($sql);
+  return $bt;
+}
+function xoa_spbienthe($id)
+{
+  $sql = "DELETE FROM `sanpham_bienthe` WHERE id_spbt = '$id'";
+  pdo_execute($sql);
+}
+
+function load_color_ct($id)
+{
+  $sql = "SELECT * FROM `sanpham_bienthe` LEFT JOIN color ON sanpham_bienthe.id_color = color.id_color WHERE id_sp = $id GROUP BY sanpham_bienthe.id_color;";
+  $sp_img = pdo_query($sql);
+  return $sp_img;
+}
