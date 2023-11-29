@@ -39,7 +39,7 @@
                   <td><img src="../assets/uploads/<?= $value['image_sp'] ?>" alt="" width="100"></td>
                   <td><?= $value['giam_gia'] ?>%</td>
                   <td><?= $value['gia'] ?></td>
-                  <td><?= $value['mo_ta'] ?></td>
+                  <td><?= $value['mo_ngan'] ?></td>
                   <td><?= $value['ngay_nhap'] ?></td>
                   <td><?= $value['name_dm'] ?></td>
                   <td><?= $value['view'] ?></td>

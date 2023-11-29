@@ -21,6 +21,10 @@
                     <label for="pwd" class="form-label">Name:</label>
                     <input type="text" class="form-control" id="pwd" value="<?= $sanpham['name_sp'] ?>" placeholder="Tên Tên Sản Phẩm" name="name" required>
                 </div>
+                <div class="mb-3">
+                <label for="exampleFormControlTextarea1">Mô tả ngắn : </label>
+                    <textarea class="form-control" id="exampleFormControlTextarea1" rows="2" name="mo_ta_n"><?= $sanpham['mo_ngan'] ?></textarea>
+                </div>
                 <div class="mb-3 mt-3">
                     <label for="email" class="form-label">Img_sp:</label>
                     <input class="form-control" type="file" name="img_sp">
@@ -112,7 +116,8 @@
                                 } else {
                                     echo "<p class='alert alert-success' width='50' > còn hàng</p>" ; 
                                 } ?></td>
-                                <td>Chức Năng</td>
+                                <td> <a href="?act=suabt&idsp=<?= $value['id_sp'] ?>&idbt=<?=$value['id_spbt']?>" class="btn btn-success" ><i class="bi bi-pencil-square"></i> Sửa</a>
+                                    <a href="?act=xoabt&idsp=<?= $value['id_sp'] ?>&idbt=<?=$value['id_spbt']?>" onclick="return confirm('Bạn có muốn xóa không ?') " class="btn btn-danger">Xóa</a></td>
                             </tr>
                         <?php endforeach ?>
 
@@ -156,7 +161,7 @@
                         </div>
                         <div class="col">
                             <label name="mau_sac" class="form-label">Số lượng:</label>
-                            <input type="text" class="form-control" placeholder="Số lượng sản phẩm" name="soluong">
+                            <input type="number" class="form-control" placeholder="Số lượng sản phẩm" value="1" name="soluong">
                         </div>
                         <div class="modal-footer">
                             <input type="submit" class="btn btn-success" data-bs-dismiss="modal" name="bienthe" value="Thêm">

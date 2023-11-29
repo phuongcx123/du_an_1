@@ -51,17 +51,37 @@
         <div class="col-12">
           <div class="header-top-align">
             <div class="header-top-align-start">
-              <div class="desc">
-                <p>World Wide Completely Free Returns and Free Shipping</p>
-              </div>
+            <div class="desc">
+                <marquee>"Xin chào! Bạn đã đặt chân đến TPT STORE - Nơi Sự Lựa Chọn Đúng Đắn Bắt Đầu."</marquee>
+                </div>
             </div>
             <div class="header-top-align-end">
               <div class="header-info-items">
                 <div class="info-items">
                   <ul>
-                    <li class="number"><i class="fa fa-phone"></i><a href="tel://0123456789">+00 123 456 789</a></li>
+                    <li class="number"><i class="fa fa-phone"></i><a href="tel://0123456789">0985670942</a></li>
                     <li class="email"><i class="fa fa-envelope"></i><a href="mailto://demo@example.com">demo@example.com</a></li>
-                    <li class="account"><i class="fa fa-user"></i><a href="?act=login">Tài khoản</a></li>
+                    <li class="account"><?php
+                                                                  if (!isset($_SESSION['username'])) {
+                                                                    echo "<i class='fa fa-user'></i><a href='?act=login'>Tài khoản</a>";
+                                                                  } else {
+                                                                  
+                                                                    echo "
+                                                                    <a type='button'  data-bs-toggle='dropdown'>
+                                                                      Xin Chào : <img src='assets/uploads/" . $_SESSION['username']['image_tk']. "' class='img-thumbnail' style='border-radius: 50%; width: 30px; height: 30px; object-fit: cover;'> <spam class='text-body'>" . $_SESSION['username']['name_tk'] . " </spam>
+                                                                    </a>
+                                                                    <ul class='dropdown-menu'>
+                                                                      <li><a class='dropdown-item' href='?act=thongtin'>Thông Tin Tài Khoản</a></li>
+                                                                      <li><a class='dropdown-item' href='?act=dangxuat'>Đăng Xuất</a></li>
+                                                                      <li><a class='dropdown-item' href='?act=doimk'>Đổi Mật Khẩu</a></li>";
+                                                                     if ($_SESSION['username']['chucvu']== 1){
+                                                                  echo   "<li><a class='dropdown-item' href='admin/index.php'>Vào Trang Quản Trị</a></li> </ul>";
+                                                                     }
+                                                                  
+                                                                  }
+
+
+                                                                  ?></li>
                   </ul>
                 </div>
               </div>
@@ -131,8 +151,14 @@
                 </li>
                 <li class="has-submenu position-static"><a href="index.php?act=shop"><span>Danh mục</span></a>
                   <ul class="submenu-nav submenu-nav-mega1">
-                    <li><a href="blog.html">Nam </a></li>
-                    <li><a href="blog-left-sidebar.html">Nữ</a></li>
+                  <?php
+                                      // Assuming LoadAll_DM() returns an array of categories
+                                      $danhmuc = LoadAll_DM();
+
+                                      foreach ($danhmuc as $category) {
+                                          echo "<li><a href='index.php?act=shop&id={$category['id_dm']}'>{$category['name_dm']}</a></li>";
+                                      }
+                                      ?>
                   </ul>
                 </li>
                 <li class="has-submenu1 position-static"><a href="index.php?act=shop"><span>Sản Phẩm</span></a>
