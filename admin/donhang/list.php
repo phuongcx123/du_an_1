@@ -11,7 +11,7 @@
         <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
           <thead>
             <tr>
-              <th>STT</th>
+              <th>Mã Đơn Hàng</th>
               <th>Full name</th>
               <th>Điện Thoại</th>
               <th>Địa Chỉ</th>

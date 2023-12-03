@@ -5,11 +5,11 @@
         <div class="row">
             <div class="col">
                 <label name="mau_sac" class="form-label">Tài Khoản Đăng Nhập:</label>
-                <input type="text" value="<?= $tk['name_tk'] ?>" name="name" class="form-control" readonly>
+                <input type="text" value="<?= $tk['name_tk'] ?>" name="tk" class="form-control" readonly>
             </div>
             <div class="col">
                 <label name="mau_sac" class="form-label">Mật Khẩu</label>
-                <input type="text" value="<?= $tk['pass'] ?>" class="form-control" readonly>
+                <input type="text" name="mk" value="<?= $tk['pass'] ?>" class="form-control" readonly>
             </div>
 
         </div>
@@ -50,8 +50,8 @@
         </div>
         <div class="col1" style="margin-top:25px ;">
             <input type="hidden" name="id" value="<?= $tk['id_tk'] ?>" class="form-control" readonly>
-            <a href="?act=taikhoan" class="btn btn-primary"><i class="bi bi-arrow-left-square-fill"></i> Quay Lại</a>
-            <input type="submit" value="cập nhật" name="gui" class="btn btn-info">
+            <a href="?act=taikhoan" class="btn btn-danger"><i class="bi bi-arrow-left-square-fill"></i> Quay Lại</a>
+            <input type="submit" value="Cập nhật" name="gui" class="btn btn-primary">
         </div>
 
     </form>

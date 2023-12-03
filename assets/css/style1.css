@@ -5219,7 +5219,7 @@ table p {
     margin-bottom: 10px;
   }
 }
-.shopping-cart-form .table tbody .actions button {
+.shopping-cart-form .table tbody .actions input {
   border: 1px solid #e8e8e8;
   background-color: transparent;
   border-radius: 8px;
@@ -5243,7 +5243,7 @@ table p {
   -o-transition: all 0.4s ease-out;
 }
 @media only screen and (max-width: 991px) {
-  .shopping-cart-form .table tbody .actions button {
+  .shopping-cart-form .table tbody .actions  {
     font-size: 11px;
     height: 46px;
     line-height: 46px;
@@ -5251,13 +5251,13 @@ table p {
   }
 }
 @media only screen and (max-width: 767px) {
-  .shopping-cart-form .table tbody .actions button {
+  .shopping-cart-form .table tbody .actions input {
     display: block;
     width: 100%;
     margin-top: 10px;
   }
 }
-.shopping-cart-form .table tbody .actions button:hover {
+.shopping-cart-form .table tbody .actions input:hover {
   background-color: #232324;
   color: #fff;
 }
