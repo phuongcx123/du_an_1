@@ -6,9 +6,24 @@
     include "model/sanpham.php";
     include "model/danhmuc.php";
     include "model/size.php";
+    include "model/color.php";
     include "model/binhluan.php";
     include "model/taikhoan.php";
+    $dm = LoadAll_DM();
     include "view/include/header.php";
+    if (isset($_POST['keyword']) &&  $_POST['keyword'] != 0) {
+        $kyw = $_POST['key'];
+        $dssp = loadall_sanpham_tk($kyw);
+        $count = COUNT($dssp);
+        include "view/shop.php";
+    } else {
+        $kyw = "";
+    }
+    if (isset($_GET['id_dm']) && ($_GET['id_dm'] > 0)) {
+        $id = $_GET['id_dm'];
+    } else {
+        $id = 0;
+    }
     if (isset($_GET['act']) && ($_GET['act'])) {
         $act = $_GET['act'];
         switch ($act) {
@@ -16,6 +31,8 @@
                 //     include "view/home.php";
                 //     break;
             case 'shop':
+                $dssp = loadall_sanpham_tk($kyw, $id);
+                $count = COUNT($dssp);
                 include "view/shop.php";
                 break;
             case 'chitietSP':
@@ -46,7 +63,35 @@
                 include "view/wishlist.php";
                 break;
             case 'cart':
-                include "view/cart.php";
+                if (!empty($_SESSION['cart'])) {
+                    $cart = $_SESSION['cart'];
+                    $mau1 = LoadAll_color();
+                    $size1 = LoadAll_size();
+                    // Tạo mảng chứa ID các sản phẩm trong giỏ hàng
+                    $productId = array_column($cart, 'id');
+                    $mau = array_column($cart, 'mau');
+                    $size = array_column($cart, 'size');
+                    // var_dump($productId, $mau, $size);
+                    // Chuyển đôi mảng  thành một cuỗi để thực hiện truy vấn
+                    $idList = implode(',', $productId);
+                    $mauList = "'" . implode("','", $mau) . "'";
+                    $sizeList = "'" . implode("','", $size) . "'";
+                    //$id_spList = "'" . implode("','", $id_sp) . "'";
+                    // Lấy sản phẩm trong bảng sản phẩm theo id
+                    $dataDb = loadone_sanphamCart($idList, $mauList, $sizeList);
+                }
+                include "view/giohang/cart.php";
+                break;
+
+            case 'xoaallgio':
+             
+                    if (isset($_SESSION["cart"])) {
+                        unset($_SESSION["cart"]);
+                        echo '<script>alert("Đã Xóa Xong ")</script>';
+                        echo "  <script>window.location.href ='?act=cart'</script> ";
+                    }
+                   
+                
                 break;
             case 'login':
                 if (isset($_POST['login']) && ($_POST['login'] != "")) {
@@ -106,14 +151,25 @@
                     $img = $_POST['img_tk'];
                     if ($file['size'] > 0) {
                         $img = $file['name'];
+                        unset($_SESSION["username"]);
                         move_uploaded_file($file['tmp_name'], "assets/uploads/" . $img);
                     }
-
-                    // echo $img;
                     upload_tk_user($id, $sdt, $full_name, $diachi, $email, $img);
-                    echo '<script>alert("Cập nhật Thành Công")</script>';
-                    echo "  <script>window.location.href ='index.php'</script> ";
+                    if (empty($_SESSION['username'])) {
+                        $username = $_POST['tk'];
+                        $password = $_POST['mk'];
+                        $checkuser = checkuser($username, $password);
+                        if (is_array($checkuser)) {
+                            $_SESSION['username'] = $checkuser;
+                        }
+                    }
+                    // echo $img;
+
+
                 }
+
+                echo '<script>alert("Cập nhật Thành Công")</script>';
+                echo "  <script>window.location.href ='index.php'</script> ";
                 break;
             case 'dangxuat':
                 if (isset($_SESSION["username"])) {
@@ -136,7 +192,7 @@
 
                 break;
             case 'quenmk':
-               
+
                 include "./view/taikhoan/quenmk.php";
                 break;
             case 'doimk':
@@ -146,21 +202,27 @@
                     $newPassword = $_POST['newPassword'];
                     $confirmPassword = $_POST['confirmPassword'];
 
-                    if ($newPassword === $confirmPassword) {
-                        // Gọi hàm để cập nhật mật khẩu trong session
-                        changepassword($id, $newPassword);
-                        //unset($_SESSION["username"]);
-                        // Sau khi cập nhật session, bạn có thể tiến hành cập nhật trong cơ sở dữ liệu.
-                        // Cần sử dụng câu lệnh SQL UPDATE để cập nhật mật khẩu trong bảng taikhoan
+                    if ($_SESSION['username']['pass'] == $password) {
+                        if ($newPassword === $confirmPassword) {
+                            // Gọi hàm để cập nhật mật khẩu trong session
+                            changepassword($id, $newPassword);
+                            //unset($_SESSION["username"]);
+                            // Sau khi cập nhật session, bạn có thể tiến hành cập nhật trong cơ sở dữ liệu.
+                            // Cần sử dụng câu lệnh SQL UPDATE để cập nhật mật khẩu trong bảng taikhoan
 
-                        // Ví dụ:
-                        // $sql = "UPDATE taikhoan SET pass = '$newPassword' WHERE id_tk = $id";
-                        // pdo_execute($sql);
-
-                        echo '<script>alert("Bạn đã đổi mật khẩu thành công")</script>';
-                        header("refresh:0.08;url=?act=login");
+                            // Ví dụ:
+                            // $sql = "UPDATE taikhoan SET pass = '$newPassword' WHERE id_tk = $id";
+                            // pdo_execute($sql);
+                            if (isset($_SESSION["username"])) {
+                                unset($_SESSION["username"]);
+                            }
+                            echo '<script>alert("Bạn đã đổi mật khẩu thành công")</script>';
+                            header("refresh:0.08;url=?act=login");
+                        } else {
+                            echo '<script>alert("Xác nhận mật khẩu không khớp")</script>';
+                        }
                     } else {
-                        echo '<script>alert("Xác nhận mật khẩu không khớp")</script>';
+                        echo '<script>alert("Mật Khẩu cũ Không đúng ")</script>';
                     }
                 }
                 include "view/Taikhoan/doimk.php";
@@ -169,7 +231,7 @@
                 break;
         }
     } else {
-        $sanpham = load_sanpham_all();
+        $sanpham = load_sanpham_top8();
         include "view/include/home.php";
     }
     include "view/include/footer.php";

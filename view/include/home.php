@@ -166,7 +166,7 @@
             <div class="product-item">
               <div class="inner-content">
                 <div class="product-thumb">
-                <a href="?act=chitietSP&id_sp=<?= $id_sp ?>&id_dm=<?=$id_dm?>">
+                  <a href="?act=chitietSP&id_sp=<?= $id_sp ?>&id_dm=<?= $id_dm ?>">
                     <img src="assets/uploads/<?= $image_sp ?>" width="270" height="274" alt="Image-HasTech">
                   </a>
                   <?php if ($giam_gia == 0) {
@@ -200,17 +200,17 @@
                       <li><a href="shop.html">Nữ</a></li>
                     </ul>
                   </div>
-                  <h4 class="title"><a href="?act=chitietSP&id_sp=<?= $id_sp ?>&id_dm=<?=$id_dm?>"><?= $name_sp ?></a></h4>
+                  <h4 class="title"><a href="?act=chitietSP&id_sp=<?= $id_sp ?>&id_dm=<?= $id_dm ?>"><?= $name_sp ?></a></h4>
                   <div class="prices">
                     <?php if ($giam_gia == 0) {
-                      echo " <span class='price'  >". number_format($gia, 0, '.', ',') ." VND</span>";
+                      echo " <span class='price'  >" . number_format($gia, 0, '.', ',') . " VND</span>";
                     } else {
-                      $giathuc = $gia - ($giam_gia*$gia)/100 ;  
-                      echo "<span class='price-old' style='font-size: small; color: red; '>".number_format($gia, 0, '.', ',')." VND</span>
-                      <span class='price'  >". number_format($giathuc, 0, '.', ',') ." VND</span>";
+                      $giathuc = $gia - ($giam_gia * $gia) / 100;
+                      echo "<span class='price-old' style='font-size: small; color: red; '>" . number_format($gia, 0, '.', ',') . " VND</span>
+                      <span class='price'  >" . number_format($giathuc, 0, '.', ',') . " VND</span>";
                     }
                     ?>
-                   
+
                   </div>
                 </div>
               </div>
@@ -266,19 +266,22 @@
                     <div class="product-item">
                       <div class="inner-content">
                         <div class="product-thumb">
-                          <a href="index.php?act=chitietSP">
-                            <img src="assets/img/shop/<?= $image_sp ?>" width="270" height="274" alt="Image-HasTech">
+                          <a href="?act=chitietSP&id_sp=<?= $id_sp ?>&id_dm=<?= $id_dm ?>">
+                            <img src="assets/uploads/<?= $image_sp ?>" width="270" height="274" alt="Image-HasTech">
                           </a>
-                          <div class="product-flag">
-                            <ul>
-                              <li class="discount"><?php if ($giam_gia = '0') {
-                                                      echo "";
-                                                    } else {
-                                                      echo $giam_gia . "%";
-                                                    }
-                                                    ?></li>
-                            </ul>
-                          </div>
+                          <?php if ($giam_gia == 0) {
+                            echo "";
+                          } else {
+                            echo "  <div class='product-flag'>
+                    <ul>
+                      <li class='discount'>$giam_gia%</li>
+                    </ul>
+                  </div>";
+                          }
+
+
+                          ?>
+
                           <div class="product-action">
                             <a class="btn-product-wishlist" href="shop-wishlist.html"><i class="fa fa-heart"></i></a>
                             <a class="btn-product-cart" href="shop-cart.html"><i class="fa fa-shopping-cart"></i></a>
@@ -292,16 +295,22 @@
                         <div class="product-info">
                           <div class="category">
                             <ul>
-                              <li><a href="shop.html">Men</a></li>
+                              <li><a href="shop.html">Nam</a></li>
                               <li class="sep">/</li>
                               <li><a href="shop.html">Nữ</a></li>
                             </ul>
                           </div>
-                          <h4 class="title"><a href="?act=chitietSP&id_sp=<?= $id ?>"><?= $name_sp ?></a></h4>
+                          <h4 class="title"><a href="?act=chitietSP&id_sp=<?= $id_sp ?>&id_dm=<?= $id_dm ?>"><?= $name_sp ?></a></h4>
                           <div class="prices">
-                            <span class="price-old"><?= $giam_gia ?></span>
-                            <span class="sep">-</span>
-                            <span class="price"><?= $gia ?></span>
+                            <?php if ($giam_gia == 0) {
+                              echo " <span class='price'  >" . number_format($gia, 0, '.', ',') . " VND</span>";
+                            } else {
+                              $giathuc = $gia - ($giam_gia * $gia) / 100;
+                              echo "<span class='price-old' style='font-size: small; color: red; '>" . number_format($gia, 0, '.', ',') . " VND</span>
+                      <span class='price'  >" . number_format($giathuc, 0, '.', ',') . " VND</span>";
+                            }
+                            ?>
+
                           </div>
                         </div>
                       </div>

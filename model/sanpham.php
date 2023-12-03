@@ -104,3 +104,31 @@ function load_color_ct($id)
   $sp_img = pdo_query($sql);
   return $sp_img;
 }
+function loadone_sanphamCart($idList,$mauList,$sizeList) {
+  $sql = "SELECT * 
+  FROM sanpham 
+  JOIN sanpham_bienthe ON sanpham.id_sp = sanpham_bienthe.id_sp 
+  WHERE sanpham.id_sp IN ($idList) AND id_color IN ($mauList) AND id_size IN ($sizeList);";
+  $sanpham = pdo_query($sql);
+  return $sanpham;
+}
+
+function loadall_sanpham_tk($keyw="",$id_dm=0){
+  $sql = "select * from sanpham JOIN danhmuc ON sanpham.id_dm = danhmuc.id_dm where 1";
+  if($keyw != ""){
+    $sql .= " and name_sp like '%".$keyw."%'";
+  }
+  if($id_dm > 0){
+    $sql .= " and sanpham.id_dm ='".$id_dm."'";
+  }
+  $sql .= " order by id_sp";
+  $listsanpham = pdo_query($sql);
+  return  $listsanpham;
+}
+
+function load_sanpham_top8()
+{
+  $sql = "SELECT * FROM sanpham JOIN danhmuc ON sanpham.id_dm = danhmuc.id_dm ORDER BY sanpham.id_sp DESC LIMIT 8";
+  $sp =   pdo_query($sql);
+  return $sp;
+}

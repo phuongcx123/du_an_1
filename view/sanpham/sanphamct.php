@@ -34,6 +34,7 @@
                     <div class="swiper-wrapper">
                       <div class="swiper-slide">
                         <a class="lightbox-image" data-fancybox="gallery" href="assets/uploads/<?= $sp_img['image_sp'] ?>">
+
                           <img src="assets/uploads/<?= $sp_img['image_sp'] ?>" width="570" height="541" alt="Image-HasTech">
                         </a>
                       </div>
@@ -65,14 +66,15 @@
               <div class="col-xl-6">
                 <!--== Start Product Info Area ==-->
                 <div class="product-single-info">
+                  <input type="hidden" value="<?= $sp_img['id_sp'] ?>" class="id_sp">
                   <h3 class="main-title"><?= $sp_img['name_sp'] ?></h3>
                   <div class="prices">
-                  <?php if ( $sp_img['giam_gia'] == 0) {
-                      echo " <span class='price'  >". number_format(  $sp_img['gia'],0, '.', ',') ." VND</span>";
+                    <?php if ($sp_img['giam_gia'] == 0) {
+                      echo " <span class='price'  >" . number_format($sp_img['gia'], 0, '.', ',') . " VND</span>";
                     } else {
-                      $giathuc = $sp_img['gia'] - ($sp_img['giam_gia']*$sp_img['gia'])/100 ;  
-                      echo "<span class='price-old' style='font-size: small; color: red; text-decoration: line-through;'>".number_format($sp_img['gia'], 0, '.', ',')." VND</span>
-                      <span class='price'  >". number_format($giathuc, 0, '.', ',') ." VND</span>";
+                      $giathuc = $sp_img['gia'] - ($sp_img['giam_gia'] * $sp_img['gia']) / 100;
+                      echo "<span class='price-old' style='font-size: small; color: red; text-decoration: line-through;'>" . number_format($sp_img['gia'], 0, '.', ',') . " VND</span>
+                      <span class='price'  >" . number_format($giathuc, 0, '.', ',') . " VND</span>";
                     }
                     ?>
                   </div>
@@ -94,7 +96,7 @@
                     <h6 class="title">Color</h6>
                     <ul class="color-list">
                       <?php foreach ($load_color as $key => $value) : ?>
-                        <li data-bg-color="<?= $value['mau'] ?>" onclick="selectColor(this)"></li>
+                        <li value="<?= $value['id_color'] ?>" data-bg-color="<?= $value['mau'] ?> "></li>
                       <?php endforeach ?>
                     </ul>
                   </div>
@@ -103,7 +105,7 @@
                     <h6 class="title">Size</h6>
                     <ul class="size-list">
                       <?php foreach ($load_size as $key => $value) : ?>
-                        <li onclick="selectSize(this, '<?= $value['id_size'] ?>')"><?= $value['name_size'] ?></li>
+                        <li value="<?= $value['id_size'] ?>"><?= $value['name_size'] ?></li>
                       <?php endforeach ?>
                     </ul>
                   </div>
@@ -111,64 +113,210 @@
                   <div class="product-quick-action">
                     <div class="qty-wrap">
                       <div class="pro-qty">
-                        <input type="text" title="Quantity" value="1">
+                        <input type="text" class="soluong" title="Quantity" value="1" id="quantityInput" min="1" readonly>
+
+                        <div class="dec qty-btn">-</div>
+                        <div class="inc qty-btn">+</div>
                       </div>
                     </div>
-                    <a class="btn-theme" href="javascript:void(0)" onclick="addToCart()">Add to Cart</a>
+                    <button data-id="<?= $sp_img['id_sp'] ?>" class="btn-theme" id="addToCartBtn" onclick="addToCart(<?= $sp_img['id_sp'] ?>, '<?= $sp_img['name_sp'] ?>', <?= $giathuc ?>)">Thêm vào giỏ hàng</button>
                   </div>
 
-                  <!-- JavaScript -->
+                  <!-- check size color  -->
+                  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
                   <script>
-                    var selectedColorElement = null;
-                    var selectedSizeElement = null;
+                    let totalProduct = document.getElementById('giohanh');
 
-                    function selectColor(element) {
-                      // Remove 'active' class from previously selected color
-                      if (selectedColorElement) {
-                        selectedColorElement.classList.remove('active');
-                      }
 
-                      // Add 'active' class to the clicked color
-                      element.classList.add('active');
-                      selectedColorElement = element;
-                    }
+                    function addToCart(productId, productName, productPrice) {
+                      // console.log(productId, productName, productPrice);
+                      // Sử dụng jQuery
+                      if (mau_sac != null || size_s != null) {
+                        $.ajax({
+                          type: 'POST',
+                          // Đường dẫ tới tệp PHP xử lý dữ liệu
+                          url: 'model/addToCart.php',
+                          data: {
+                            id: productId,
+                            name: productName,
+                            price: productPrice,
+                            sl: soluong,
+                            size: size_s,
+                            mau: mau_sac
+                          },
+                          success: function(response) {
+                            totalProduct.innerText = response;
+                            alert('Bạn đã thêm sản phẩm vào giỏ hàng thành công!')
+                          },
+                          error: function(error) {
+                            console.log(error);
+                          }
+                        });
 
-                    function selectSize(element, size) {
-                      // Remove 'active' class from previously selected size
-                      if (selectedSizeElement) {
-                        selectedSizeElement.classList.remove('active');
-                      }
 
-                      // Add 'active' class to the clicked size
-                      element.classList.add('active');
-                      selectedSizeElement = element;
-                    }
-
-                    function addToCart() {
-                      // Check if both color and size are selected
-                      if (selectedColorElement && selectedSizeElement) {
-                        // Extract color value from the selected color element
-                        var selectedColor = selectedColorElement.getAttribute('data-bg-color');
-
-                        // Extract size value from the selected size element
-                        var selectedSize = selectedSizeElement.innerText;
-
-                        // You can use AJAX to send the data to the server or store in the session
-                        // For now, let's log the selected color and size to the console
-                        console.log('Selected Color:', selectedColor);
-                        console.log('Selected Size:', selectedSize);
                       } else {
-                        alert('Please select color and size before adding to cart.');
+                        alert('Vui Lòng Chọn Màu Săc , Size')
                       }
+
+
                     }
+
+                    // đoạn số lượng 
+
+                    let mau_sac = null;
+                    let size_s = null;
+                    let idsp = null;
+                    let soluong = 1;
+
+                    //var id_san_pham = $(".product-single-info").children(".id_sp").val();
+                    $(document).ready(function() {
+
+                      var quantityInput = $('#quantityInput');
+                      $('.inc').click(function() {
+                        if (mau_sac != null || size_s != null) {
+                          var currentValue = parseInt(quantityInput.val());
+                          soluong = parseInt(currentValue+1);
+                          console.log(soluong);
+                          checkAndUpdateQuantity(currentValue + 1);
+                        } else {
+                          alert('Vui Lòng Chọn Màu Săc , Size')
+                        }
+                      });
+
+                      $('.dec').click(function() {
+                        if (mau_sac != null || size_s != null) {
+                          var currentValue = parseInt(quantityInput.val());
+                         
+                          if (currentValue > 1) {
+                            soluong = parseInt(currentValue-1);
+                            //console.log(soluong);
+                            checkAndUpdateQuantity(currentValue - 1);
+                          } else {
+                            alert('Số Lượng Sản Phẩm Không Nhỏ Hơn 1')
+                          }
+                        } else {
+                          alert('Vui Lòng Chọn Màu Săc , Size')
+                        }
+                      });
+
+                      function checkAndUpdateQuantity(newQuantity) {
+
+                        // Gửi yêu cầu Ajax để kiểm tra số lượng
+                        $.ajax({
+                          type: 'POST',
+                          url: 'model/kiemtrasl.php', // Thay đổi đường dẫn phù hợp
+                          data: {
+                            newQuantity: newQuantity,
+                            mau: mau_sac,
+                            size: size_s,
+                            id_sp: idsp
+                          },
+                          success: function(response) {
+                            if (response === 'valid') {
+                              // Nếu số lượng hợp lệ, cập nhật giá trị
+                              quantityInput.val(newQuantity);
+                            } else {
+                              let hihi = newQuantity - 1;
+                              alert('Hiện tại Trong Kho Còn: ' + hihi + ' Sản phẩm');
+                            }
+                          }
+                        });
+                      }
+                    });
+
+                    // màu với size 
+                    $(document).on('click', '.color-list li', function() {
+                      // Xóa class 'active' từ tất cả các màu
+                      $('.color-list li').removeClass('active');
+                      // Thêm class 'active' cho màu được chọn
+                      $(this).addClass('active');
+
+                      // Rest of your code...
+                    });
+                    $(document).on('click', '.size-list li', function() {
+                      // Xóa class 'active' từ tất cả các màu
+                      $('.size-list li').removeClass('active');
+                      // Thêm class 'active' cho màu được chọn
+                      $(this).addClass('active');
+
+
+                    });
+
+
+                    // Sự kiện khi một kích thước được chọn
+                    $(document).on('click', '.size-list li', function() {
+                      var selectedSizeId = $(this).val();
+                      var selectedColor = $('.color-list li.active').attr('value');
+                      var id_san_pham = $(".product-single-info").children(".id_sp").val();
+
+                      // Check size thuộc màu
+                      $.post(
+                        "model/check_size.php", {
+                          id_sp: id_san_pham,
+                          color: selectedColor,
+                          size: selectedSizeId,
+                        },
+                        function(data) {
+                          var isSizeBelongsToColor = JSON.parse(data);
+                          if (isSizeBelongsToColor) {
+                            // alert("Chọn đúng nền văn minh rồi");
+                            // Nếu size thuộc màu, kiểm tra số lượng
+                            // console.log(selectedColor);
+                            mau_sac = selectedColor;
+                            size_s = selectedSizeId;
+                            idsp = id_san_pham;
+                           // soluong = 1;
+                           console.log(soluong);
+                            //console.log(id_san_pham);
+                            ////console.log(size);
+                          } else {
+
+                            alert("Hiện Tại Size này Đang Hết Hàng");
+                          }
+                        }
+                      );
+                    });
+                    $(document).on('click', '.color-list li', function() {
+                      var selectedColor = $(this).val();
+                      var selectedSizeId = $('.size-list li.active').attr('value');
+                      var id_san_pham = $(".product-single-info").children(".id_sp").val();
+
+                      // Check màu thuộc size
+                      $.post(
+                        "model/check_size.php", {
+                          id_sp: id_san_pham,
+                          color: selectedColor,
+                          size: selectedSizeId,
+                        },
+                        function(data) {
+                          var isSizeBelongsToSize = JSON.parse(data);
+                          if (isSizeBelongsToSize) {
+                            mau_sac = selectedColor;
+                            size_s = selectedSizeId;
+                            idsp = id_san_pham;
+                           // soluong = 1;
+                             console.log(soluong);
+                            // console.log(size_s);
+                            //  console.log(id_san_pham);
+                            // Nếu màu thuộc size, kiểm tra số lượng
+
+                          } else {
+                            alert("Hiện Tại Màu này Đang Hết Hàng");
+                          }
+                        }
+                      );
+                    });
                   </script>
 
+
+
+
+
                   <div class="product-wishlist-compare">
-                    <a href="shop-wishlist.html"><i class="pe-7s-like"></i>Add to Wishlist</a>
-                    <a href="shop-compare.html"><i class="pe-7s-shuffle"></i>Add to Compare</a>
+
                   </div>
                   <div class="product-info-footer">
-                    <h6 class="code"><span>Code :</span>Ch-256xl</h6>
+                    <h6 class="code"><span>Code :</span>SP_S<?= $sp_img['id_sp'] ?></h6>
                     <div class="social-icons">
                       <span>Share</span>
                       <a href="#/"><i class="fa fa-facebook"></i></a>
@@ -217,6 +365,6 @@
   <!--== End Product Single Area Wrapper ==-->
 
   <!--== Start Product Area Wrapper ==-->
-<?php include("sanphamlienquan.php") ?>
+  <?php include("sanphamlienquan.php") ?>
   <!--== End Product Area Wrapper ==-->
 </main>
