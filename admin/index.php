@@ -328,6 +328,8 @@ if (isset($_SESSION['username']) && ($_SESSION['username']['chucvu'] == 1)) {
         include("donhang/list.php");
         break;
       case "donct":
+        $mau1 = LoadAll_color();
+        $size1 = LoadAll_size();
         $id = $_GET['idd'];
         $don =   load_don_chitiet($id);
         include("donhang/chitietdon.php");
@@ -353,6 +355,11 @@ if (isset($_SESSION['username']) && ($_SESSION['username']['chucvu'] == 1)) {
           $id = $_POST['id'];
 
           up_don($id, 2);
+        }
+        if (isset($_POST['thanhcong']) && $_POST['thanhcong'] != "") {
+          $id = $_POST['id'];
+
+          up_don($id, 3);
         }
         if (isset($_POST['quay']) && $_POST['quay'] != "") {
           echo "  <script>window.location.href ='index.php?act=donhang'</script> ";
