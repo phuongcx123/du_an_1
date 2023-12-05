@@ -116,8 +116,9 @@
                     // Lấy sản phẩm trong bảng sản phẩm theo id
                     $dataDb = loadone_sanphamCart($idList, $mauList, $sizeList);
                 }
-                include "view/chitietThanhtoan.php";
+                include "view/thanhtoan/chitietThanhtoan.php";
                 break;
+            
             case 'blog':
                 include "view/blog.php";
                 break;
