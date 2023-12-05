@@ -92,8 +92,8 @@
                     if ($thanhtoan == 0) {
                         include "view/xulymomo.php";
                     } else {
-                        echo '<script>alert("Đặt  Hàng Thành Công  ")</script>';
-                        echo "  <script>window.location.href ='?act'</script> ";
+
+                        include "view/thanhtoan/thanhtoan_khinhan.php";
                     }
                 }
 
@@ -118,7 +118,7 @@
                 }
                 include "view/thanhtoan/chitietThanhtoan.php";
                 break;
-            
+
             case 'blog':
                 include "view/blog.php";
                 break;

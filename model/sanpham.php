@@ -2,7 +2,7 @@
 function add_sanpham($name, $giam_gia, $mota, $date, $gioitinh, $dm, $gia, $img, $mota_n)
 {
   $sql = " INSERT INTO sanpham (id_sp, name_sp,mo_ngan, image_sp, giam_gia, gia, mo_ta, ngay_nhap, view, gioi_tinh, id_dm) 
-  VALUES (NULL, '$name',$mota_n, '$img', '$giam_gia', '$gia', '$mota', '$date', '0', '$gioitinh', '$dm') ";
+  VALUES (NULL, '$name','$mota_n', '$img', '$giam_gia', '$gia', '$mota', '$date', '0', '$gioitinh', '$dm') ";
   $lastInsertedId = pdo_execute_return_lastInsertId($sql);
   return $lastInsertedId;
 }
@@ -104,7 +104,8 @@ function load_color_ct($id)
   $sp_img = pdo_query($sql);
   return $sp_img;
 }
-function loadone_sanphamCart($idList,$mauList,$sizeList) {
+function loadone_sanphamCart($idList, $mauList, $sizeList)
+{
   $sql = "SELECT * 
   FROM sanpham 
   JOIN sanpham_bienthe ON sanpham.id_sp = sanpham_bienthe.id_sp 
@@ -113,13 +114,14 @@ function loadone_sanphamCart($idList,$mauList,$sizeList) {
   return $sanpham;
 }
 
-function loadall_sanpham_tk($keyw="",$id_dm=0){
+function loadall_sanpham_tk($keyw = "", $id_dm = 0)
+{
   $sql = "select * from sanpham JOIN danhmuc ON sanpham.id_dm = danhmuc.id_dm where 1";
-  if($keyw != ""){
-    $sql .= " and name_sp like '%".$keyw."%'";
+  if ($keyw != "") {
+    $sql .= " and name_sp like '%" . $keyw . "%'";
   }
-  if($id_dm > 0){
-    $sql .= " and sanpham.id_dm ='".$id_dm."'";
+  if ($id_dm > 0) {
+    $sql .= " and sanpham.id_dm ='" . $id_dm . "'";
   }
   $sql .= " order by id_sp";
   $listsanpham = pdo_query($sql);

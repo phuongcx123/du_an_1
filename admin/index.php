@@ -100,7 +100,7 @@ if (isset($_SESSION['username']) && ($_SESSION['username']['chucvu'] == 1)) {
             }
           }
           //echo $idspnew;
-          //echo "  <script>alert('Thêm Thành Công') </script> ";
+          echo "  <script>alert('Thêm Thành Công') </script> ";
           echo "  <script>window.location.href ='index.php?act=editsp&idsp=$idspnew'</script> ";
         }
         include("sanpham/add.php");
