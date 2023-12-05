@@ -189,11 +189,11 @@ if (empty($dataDb)) {
                       </script>
 
                       <?php
-                      // Tính tổng giá đơn hàng
-                      //   $sum_total += ((int)$product['gia'] * (int)$quantityInCart);
+                      //Tính tổng giá đơn hàng
+                       $sum_total += ((int)$giathuc * (int)$quantityInCart);
 
                       // Lưu tổng giá trị vào sesion
-                      $_SESSION['resultTotal'] = $sum_total;
+                     setcookie('Tong',$sum_total) ;
                       ?>
                     <?php endforeach ?>
                     <tr class="actions">
