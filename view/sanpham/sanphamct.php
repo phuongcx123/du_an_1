@@ -192,6 +192,7 @@
                             //console.log(soluong);
                             checkAndUpdateQuantity(currentValue - 1);
                           } else {
+                            soluong = 1 ; 
                             alert('Số Lượng Sản Phẩm Không Nhỏ Hơn 1')
                           }
                         } else {
@@ -216,7 +217,9 @@
                               // Nếu số lượng hợp lệ, cập nhật giá trị
                               quantityInput.val(newQuantity);
                             } else {
+                           
                               let hihi = newQuantity - 1;
+                              soluong = hihi ; 
                               alert('Hiện tại Trong Kho Còn: ' + hihi + ' Sản phẩm');
                             }
                           }
@@ -261,7 +264,7 @@
                           if (isSizeBelongsToColor) {
                             // alert("Chọn đúng nền văn minh rồi");
                             // Nếu size thuộc màu, kiểm tra số lượng
-                            // console.log(selectedColor);
+                            //console.log(selectedColor);
                             mau_sac = selectedColor;
                             size_s = selectedSizeId;
                             idsp = id_san_pham;

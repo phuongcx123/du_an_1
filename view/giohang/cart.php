@@ -1,8 +1,23 @@
 <?php
 if (empty($dataDb)) {
-  echo '<h1>Chưa có sản phẩm nào trong giỏ hàng</h1>';
+  echo '<div class="py-3 text-center">
+            <div class="fs-4">Giỏ hàng trống</div>
+            <img src="assets/img/icons/logo.png" style="max-width: 90px; height: auto; margin-bottom: 10px;"><br>
+            <button type="button" class="btn btn-warning rounded-pill text-dark" onclick="continueShopping()">Tiếp tục mua hàng</button>
+        </div>';
+  echo '<script>
+        function buttonHoverEffect(button) {
+          button.style.backgroundColor = "#2c5e28"; /* Adjust hover background color if desired */
+          button.style.borderColor = "#2c5e28"; 
+        }
+        function continueShopping() {
+          window.location.href = "?act=shop"; // Change "./" to the desired URL
+      }
+    </script>';
 } else {
+  // Your existing HTML content for the non-empty cart
 ?>
+
   <style>
     /* Style for thead */
     thead {
@@ -124,28 +139,61 @@ if (empty($dataDb)) {
                         </td>
                         <td class="product-price">
                           <?php $giathuc = $sanpham['gia'] - ($sanpham['giam_gia'] * $sanpham['gia']) / 100; ?>
-                          <span class="price"><?= number_format((int)$giathuc, 0, '.', ',') ?> <u>vnđ</u> </span>
+                          <span class="price"><?= number_format((int)$giathuc, 0, '.', ',') ?> vnđ </span>
                         </td>
                         <td class="product-quantity">
                           <div class="pro-qty">
-                            <input type="text" class="quantity" title="Quantity" value="<?= $quantityInCart ?>" min="1">
+                            <input type="text" class="quantity" title="Quantity" value="<?= $quantityInCart ?>" min="1" id="quantity_<?= $sanpham['id_sp'] ?>" oninput="updateQuantity(<?= $sanpham['id_sp'] + 1 ?>, <?= $key ?>)" readonly>
                           </div>
                         </td>
 
+
+
                         <td class="product-subtotal">
-                          <span class="price"><?= number_format((int)$giathuc * (int)$quantityInCart, 0, '.', ',') ?> <u>vnđ</u> </span>
+                          <span class="price"><?= number_format((int)$giathuc * (int)$quantityInCart, 0, '.', ',') ?> vnđ </span>
                         </td>
                         <td class="product-remove">
-                          <a href="#/"><i class="fa fa-trash-o"></i></a>
+                          <a href="" onclick="removeCart(<?= $sanpham['id_sp'] ?>)" style="margin-left: 17px;"><i class="fa fa-trash-o"></i></a>
                         </td>
                       </tr>
+                      <script>
+                        function removeCart(id) {
+                          if (confirm("Bạn có đồng ý xóa sản phẩm hay không?")) {
+                            // Gửi yêu cầu bằng ajax để cập nhật giỏ hàng
+                            $.ajax({
+                              type: 'POST',
+                              url: 'view/giohang/removeCart.php',
+                              data: {
+                                id: id
+                              },
+                              success: function(response) {
+                                // Log success message
+                                console.log('Xóa sản phẩm thành công');
+
+                                // Log the response for debugging
+                                console.log(response);
+
+                                // Delay the redirection by 2 seconds (2000 milliseconds)
+                                setTimeout(function() {
+                                  // Redirect to ?act=cart regardless of success or error
+                                  window.location.href = '?act=cart';
+                                }, 5000);
+                              },
+                              error: function(error) {
+                                // Log any error messages
+                                console.log(error);
+                              }
+                            });
+                          }
+                        }
+                      </script>
 
                       <?php
-                      // Tính tổng giá đơn hàng
-                      //   $sum_total += ((int)$product['gia'] * (int)$quantityInCart);
+                      //Tính tổng giá đơn hàng
+                       $sum_total += ((int)$giathuc * (int)$quantityInCart);
 
                       // Lưu tổng giá trị vào sesion
-                      $_SESSION['resultTotal'] = $sum_total;
+                     setcookie('Tong',$sum_total) ;
                       ?>
                     <?php endforeach ?>
                     <tr class="actions">
