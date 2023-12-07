@@ -50,7 +50,7 @@
         </div>
         <div class="col1" style="margin-top:25px ;">
             <input type="hidden" name="id" value="<?= $tk['id_tk'] ?>" class="form-control" readonly>
-            <a href="?act=taikhoan" class="btn btn-danger"><i class="bi bi-arrow-left-square-fill"></i> Quay Lại</a>
+            <a href="index.php" class="btn btn-danger"><i class="bi bi-arrow-left-square-fill"></i> Quay Lại</a>
             <input type="submit" value="Cập nhật" name="gui" class="btn btn-primary">
         </div>
 

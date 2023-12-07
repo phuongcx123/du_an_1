@@ -28,9 +28,7 @@
     if (isset($_GET['act']) && ($_GET['act'])) {
         $act = $_GET['act'];
         switch ($act) {
-                // case 'home':
-                //     include "view/home.php";
-                //     break;
+
             case 'shop':
                 $dssp = loadall_sanpham_tk($kyw, $id);
                 $count = COUNT($dssp);
@@ -88,16 +86,18 @@
                     }
                     unset($_SESSION["cart"]);
 
-
                     if ($thanhtoan == 0) {
                         include "view/xulymomo.php";
                     } else {
 
-                        include "view/thanhtoan/thanhtoan_khinhan.php";
+                        // echo '<script>alert("Đã Xóa Xong ")</script>';
+                        echo "  <script>window.location.href ='?act=hanh&id_don=$id_don'</script> ";
                     }
                 }
 
                 break;
+
+
             case 'CTthanhtoan':
                 if (!empty($_SESSION['cart'])) {
                     $cart = $_SESSION['cart'];
@@ -292,6 +292,21 @@
                     }
                 }
                 include "view/Taikhoan/doimk.php";
+                break;
+
+
+            case 'lichsu':
+                $mau1 = LoadAll_color();
+                $size1 = LoadAll_size();
+                if (isset($_GET['bill'])) {
+                   $keyw = $_GET['bill'];
+                } else {
+                    $keyw = "";
+                }
+               // echo $keyw ; 
+                $id = $_SESSION['username']['id_tk'];
+                $don = load_all_bill($keyw,$id);
+                include "view/thanhtoan/lichsumua.php";
                 break;
             default:
                 break;
