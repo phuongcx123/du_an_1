@@ -12,3 +12,32 @@ function add_bill_ct($id_sp,  $so_luong, $id_mau, $id_size,  $id_don)
     VALUES ('$id_don','$id_sp','$so_luong','$id_mau','$id_size')";
   pdo_execute($sql);
 }
+
+function loadd_bill_ct($id_sp)
+{
+  $sql = "SELECT * FROM `chitiet_donhang` WHERE `id_ctdon` = '$id_sp'";
+  $hi = pdo_query($sql);
+  return $hi;
+}
+
+
+function load_all_bill($kyw='', $id)
+{
+  $sql = "SELECT * FROM `chitiet_donhang` WHERE id_tk = $id";
+  if ($kyw != '') {
+      $sql .= " AND `trang_thai` = '$kyw'";
+  }
+  $sql .= " GROUP BY id_ctdon DESC";
+  
+  $hi = pdo_query($sql);
+  return $hi;
+}
+function loadd_bill_lq_ct($id_don)
+{
+  $sql = "SELECT dh.*, sp.gia, sp.giam_gia, sp.name_sp, sp.image_sp
+  FROM don_hang dh INNER JOIN sanpham sp ON dh.id_sp = sp.id_sp
+  WHERE dh.id_ctd = '$id_don'";
+
+    $hi = pdo_query($sql);
+    return $hi;
+}
