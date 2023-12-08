@@ -93,7 +93,11 @@
                     } else {
 
                         // echo '<script>alert("Đã Xóa Xong ")</script>';
+
                         echo "  <script>window.location.href ='?act=chitietdon&id_don=$id_don'</script> ";
+
+                       
+
                     }
                 }
 
@@ -299,7 +303,7 @@
 
 
             case 'lichsu':
-                $mau1 = LoadAll_color();
+           $mau1 = LoadAll_color();
                 $size1 = LoadAll_size();
                 if (isset($_GET['bill'])) {
                     $keyw = $_GET['bill'];
