@@ -82,6 +82,8 @@
                         $so_luong =    $item['quantity'];
                         $id_mau =    $item['mau'];
                         $id_size =    $item['size'];
+                        // tru_sl($id_sp, $so_luong, $id_mau, $id_size);
+
                         add_bill_ct($id_sp,  $so_luong, $id_mau, $id_size,  $id_don);
                     }
                     unset($_SESSION["cart"]);
@@ -91,7 +93,11 @@
                     } else {
 
                         // echo '<script>alert("Đã Xóa Xong ")</script>';
-                        echo "  <script>window.location.href ='?act=hanh&id_don=$id_don'</script> ";
+
+                        echo "  <script>window.location.href ='?act=chitietdon&id_don=$id_don'</script> ";
+
+                       
+
                     }
                 }
 
@@ -115,6 +121,7 @@
                     //$id_spList = "'" . implode("','", $id_sp) . "'";
                     // Lấy sản phẩm trong bảng sản phẩm theo id
                     $dataDb = loadone_sanphamCart($idList, $mauList, $sizeList);
+                    //var_dump($dataDb);
                 }
                 include "view/thanhtoan/chitietThanhtoan.php";
                 break;
@@ -296,19 +303,32 @@
 
 
             case 'lichsu':
-                $mau1 = LoadAll_color();
+           $mau1 = LoadAll_color();
                 $size1 = LoadAll_size();
                 if (isset($_GET['bill'])) {
-                   $keyw = $_GET['bill'];
+                    $keyw = $_GET['bill'];
                 } else {
                     $keyw = "";
                 }
-               // echo $keyw ; 
+                // echo $keyw ; 
                 $id = $_SESSION['username']['id_tk'];
-                $don = load_all_bill($keyw,$id);
+                $don = load_all_bill($keyw, $id);
                 include "view/thanhtoan/lichsumua.php";
                 break;
             default:
+                break;
+
+            case 'chitietdon':
+                $id = $_GET['id_don'];
+                $mau1 = LoadAll_color();
+                $size1 = LoadAll_size();
+              //  $ctdon = chitietmua_ctdon();
+                $donhang = loadd_bill_ct($id);
+                $sanpham_lq = loadd_bill_lq_ct($id);
+                // echo "<pre>";
+                // var_dump($sanpham_lq,$donhang);
+                // echo"</pre>";
+                include "view/thanhtoan/chitietdonhang.php";
                 break;
         }
     } else {

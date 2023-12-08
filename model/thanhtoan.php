@@ -21,14 +21,14 @@ function loadd_bill_ct($id_sp)
 }
 
 
-function load_all_bill($kyw='', $id)
+function load_all_bill($kyw = '', $id)
 {
   $sql = "SELECT * FROM `chitiet_donhang` WHERE id_tk = $id";
   if ($kyw != '') {
-      $sql .= " AND `trang_thai` = '$kyw'";
+    $sql .= " AND `trang_thai` = '$kyw'";
   }
   $sql .= " GROUP BY id_ctdon DESC";
-  
+
   $hi = pdo_query($sql);
   return $hi;
 }
@@ -38,6 +38,21 @@ function loadd_bill_lq_ct($id_don)
   FROM don_hang dh INNER JOIN sanpham sp ON dh.id_sp = sp.id_sp
   WHERE dh.id_ctd = '$id_don'";
 
-    $hi = pdo_query($sql);
-    return $hi;
+  $hi = pdo_query($sql);
+  return $hi;
+}
+function chitietmua_ctdon($id_don)
+{
+  $sql = "SELECT * FROM chitiet_donhang WHERE id_ctdon = '$id_don'";
+
+  $hi = pdo_query_one($sql);
+  return $hi;
+}
+function tru_sl($id_sp,  $so_luong, $id_mau, $id_size)
+{
+  $sql = "UPDATE `sanpham_bienthe`
+  SET `soluong` = `soluong` - $so_luong
+  WHERE `id_color` = '$id_mau' AND `id_size` = '$id_size' AND `id_sp` = '$id_sp';
+  ";
+  pdo_execute($sql);
 }
