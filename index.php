@@ -93,7 +93,11 @@
                     } else {
 
                         // echo '<script>alert("Đã Xóa Xong ")</script>';
+<<<<<<< HEAD
                         echo "  <script>window.location.href ='?act=chitietdon&id_don=$id_don'</script> ";
+=======
+                        echo "  <script>window.location.href ='?act=hanh&id_don=$id_don'</script> ";
+>>>>>>> baeb2bd71f70542ff775347360d36150412c344f
                     }
                 }
 
@@ -302,6 +306,7 @@
                 $mau1 = LoadAll_color();
                 $size1 = LoadAll_size();
                 if (isset($_GET['bill'])) {
+<<<<<<< HEAD
                     $keyw = $_GET['bill'];
                 } else {
                     $keyw = "";
@@ -309,6 +314,15 @@
                 // echo $keyw ; 
                 $id = $_SESSION['username']['id_tk'];
                 $don = load_all_bill($keyw, $id);
+=======
+                   $keyw = $_GET['bill'];
+                } else {
+                    $keyw = "";
+                }
+               // echo $keyw ; 
+                $id = $_SESSION['username']['id_tk'];
+                $don = load_all_bill($keyw,$id);
+>>>>>>> baeb2bd71f70542ff775347360d36150412c344f
                 include "view/thanhtoan/lichsumua.php";
                 break;
             default:

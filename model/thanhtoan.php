@@ -21,6 +21,7 @@ function loadd_bill_ct($id_sp)
 }
 
 
+<<<<<<< HEAD
 function load_all_bill($kyw = '', $id)
 {
   $sql = "SELECT * FROM `chitiet_donhang` WHERE id_tk = $id";
@@ -29,6 +30,16 @@ function load_all_bill($kyw = '', $id)
   }
   $sql .= " GROUP BY id_ctdon DESC";
 
+=======
+function load_all_bill($kyw='', $id)
+{
+  $sql = "SELECT * FROM `chitiet_donhang` WHERE id_tk = $id";
+  if ($kyw != '') {
+      $sql .= " AND `trang_thai` = '$kyw'";
+  }
+  $sql .= " GROUP BY id_ctdon DESC";
+  
+>>>>>>> baeb2bd71f70542ff775347360d36150412c344f
   $hi = pdo_query($sql);
   return $hi;
 }
@@ -38,6 +49,7 @@ function loadd_bill_lq_ct($id_don)
   FROM don_hang dh INNER JOIN sanpham sp ON dh.id_sp = sp.id_sp
   WHERE dh.id_ctd = '$id_don'";
 
+<<<<<<< HEAD
   $hi = pdo_query($sql);
   return $hi;
 }
@@ -56,3 +68,8 @@ function tru_sl($id_sp,  $so_luong, $id_mau, $id_size)
   ";
   pdo_execute($sql);
 }
+=======
+    $hi = pdo_query($sql);
+    return $hi;
+}
+>>>>>>> baeb2bd71f70542ff775347360d36150412c344f
