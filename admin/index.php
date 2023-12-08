@@ -1,7 +1,7 @@
 <?php
 session_start();
 ob_start();
-if (isset($_SESSION['username']) && ($_SESSION['username']['chucvu'] == 1)) {
+if (isset($_SESSION['admin']) && ($_SESSION['admin']['chucvu'] == 1)) {
   include("../model/pdo.php");
   include("../model/danhmuc.php");
   include("../model/sanpham.php");
