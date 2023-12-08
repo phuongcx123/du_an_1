@@ -66,12 +66,7 @@
                     ?></td>
                 <td>
                   <a href="?act=donct&idd=<?= $value['id_ctdon'] . '&trang=' . $value['trang_thai'] ?>" " class=" btn btn-success">Chi Tiết</a>
-                  <?php
-                  if (($value['trang_thai'] == 3) || ($value['trang_thai'] == 4)) {
-                    echo '<a href="?act=xoadon&idd=' . $value["id_ctdon"] . '" class="btn btn-info"> Xóa Đơn</a>';
-                  }
-
-                  ?>
+             
                 </td>
               </tr>
             <?php endforeach ?>

@@ -1,8 +1,8 @@
 <?php
 session_start();
 ob_start();
-if (isset($_SESSION['username'])) {
+if (isset($_SESSION['admin'])) {
 
-    unset($_SESSION["username"]);
+    unset($_SESSION["admin"]);
     header('Location:login.php');
 }

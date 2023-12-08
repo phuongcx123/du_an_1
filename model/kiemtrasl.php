@@ -17,11 +17,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Nếu số lượng không hợp lệ, trả về 'invalid'
         echo 'invalid';
     }
-} else {
-    // Nếu không phải yêu cầu POST, trả về lỗi
-    http_response_code(400);
-    echo 'Bad Request';
-}
+} 
 
 function checkQuantity($newQuantity, $id_san_pham, $selectedColor, $selectedSize)
 {
