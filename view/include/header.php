@@ -20,7 +20,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,600;0,700;0,800;1,400;1,500&amp;display=swap" rel="stylesheet">
-
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css">
   <!--== Bootstrap CSS ==-->
   <link href="assets/css/bootstrap.min.css" rel="stylesheet" />
   <!--== Font Awesome Min Icon CSS ==-->
@@ -44,8 +44,8 @@
     <script src="//oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
     <script src="//oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
-    
-  
+
+
 </head>
 <header class="main-header-wrapper position-relative mb-3">
   <div class="header-top">
@@ -63,7 +63,7 @@
                 <div class="info-items">
                   <ul>
                     <li class="number"><i class="fa fa-phone"></i><a href="tel://0123456789">0985670942</a></li>
-                    <li class="email"><i class="fa fa-envelope"></i><a href="mailto://demo@example.com">demo@example.com</a></li>
+                    <li class="email"><i class="fa fa-envelope"></i><a href="mailto://demo@example.com">tptshore@example.com</a></li>
                     <li class="account"><?php
                                         if (!isset($_SESSION['username'])) {
                                           echo "<i class='fa fa-user'></i><a href='?act=login'>Tài khoản</a>";
@@ -76,7 +76,8 @@
                                                                     <ul class='dropdown-menu'>
                                                                       <li><a class='dropdown-item' href='?act=thongtin'>Thông Tin Tài Khoản</a></li>
                                                                       <li><a class='dropdown-item' href='?act=dangxuat'>Đăng Xuất</a></li>
-                                                                      <li><a class='dropdown-item' href='?act=doimk'>Đổi Mật Khẩu</a></li>";
+                                                                      <li><a class='dropdown-item' href='?act=doimk'>Đổi Mật Khẩu</a></li>
+                                                                      <li><a class='dropdown-item' href='?act=lichsu'>Lịch Sử Đơn Hàng</a></li>" ;
                                           if ($_SESSION['username']['chucvu'] == 1) {
                                             echo   "<li><a class='dropdown-item' href='admin/index.php'>Vào Trang Quản Trị</a></li> </ul>";
                                           }

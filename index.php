@@ -28,9 +28,7 @@
     if (isset($_GET['act']) && ($_GET['act'])) {
         $act = $_GET['act'];
         switch ($act) {
-                // case 'home':
-                //     include "view/home.php";
-                //     break;
+
             case 'shop':
                 $dssp = loadall_sanpham_tk($kyw, $id);
                 $count = COUNT($dssp);
@@ -84,20 +82,24 @@
                         $so_luong =    $item['quantity'];
                         $id_mau =    $item['mau'];
                         $id_size =    $item['size'];
+                        // tru_sl($id_sp, $so_luong, $id_mau, $id_size);
+
                         add_bill_ct($id_sp,  $so_luong, $id_mau, $id_size,  $id_don);
                     }
                     unset($_SESSION["cart"]);
-
 
                     if ($thanhtoan == 0) {
                         include "view/xulymomo.php";
                     } else {
 
-                        include "view/thanhtoan/thanhtoan_khinhan.php";
+                        // echo '<script>alert("Đã Xóa Xong ")</script>';
+                        echo "  <script>window.location.href ='?act=chitietdon&id_don=$id_don'</script> ";
                     }
                 }
 
                 break;
+
+
             case 'CTthanhtoan':
                 if (!empty($_SESSION['cart'])) {
                     $cart = $_SESSION['cart'];
@@ -115,6 +117,7 @@
                     //$id_spList = "'" . implode("','", $id_sp) . "'";
                     // Lấy sản phẩm trong bảng sản phẩm theo id
                     $dataDb = loadone_sanphamCart($idList, $mauList, $sizeList);
+                    //var_dump($dataDb);
                 }
                 include "view/thanhtoan/chitietThanhtoan.php";
                 break;
@@ -293,7 +296,35 @@
                 }
                 include "view/Taikhoan/doimk.php";
                 break;
+
+
+            case 'lichsu':
+                $mau1 = LoadAll_color();
+                $size1 = LoadAll_size();
+                if (isset($_GET['bill'])) {
+                    $keyw = $_GET['bill'];
+                } else {
+                    $keyw = "";
+                }
+                // echo $keyw ; 
+                $id = $_SESSION['username']['id_tk'];
+                $don = load_all_bill($keyw, $id);
+                include "view/thanhtoan/lichsumua.php";
+                break;
             default:
+                break;
+
+            case 'chitietdon':
+                $id = $_GET['id_don'];
+                $mau1 = LoadAll_color();
+                $size1 = LoadAll_size();
+              //  $ctdon = chitietmua_ctdon();
+                $donhang = loadd_bill_ct($id);
+                $sanpham_lq = loadd_bill_lq_ct($id);
+                // echo "<pre>";
+                // var_dump($sanpham_lq,$donhang);
+                // echo"</pre>";
+                include "view/thanhtoan/chitietdonhang.php";
                 break;
         }
     } else {

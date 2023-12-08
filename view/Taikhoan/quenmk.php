@@ -180,7 +180,7 @@
         <div class="toggle-container">
             <div class="toggle">
                 <div class="toggle-panel toggle-right">
-                    <h1>ASCENSION Xin Chào </h1>
+                    <h1>TPT SHORE Xin Chào </h1>
                     <p>Nếu bạn quên mật khẩu, hãy làm theo các bước theo form hướng dẫn để lấy lại mật khẩu của bạn.</p>
                     <button onclick="redirectToLogin()" class="hidden">Quay Lại</button>
                     <script>

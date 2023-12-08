@@ -19,14 +19,16 @@ if (isset($_POST['login']) && ($_POST['login'])) {
     $password = $_POST['password'];
     $checkuser = checkuser($username, $password);
     if (is_array($checkuser)) {
-        
-        $_SESSION['username'] = $checkuser;
+
+        $_SESSION['admin'] = $checkuser;
         header('location:../index.php');
         echo '<script>alert("Đăng nhập thành công")</script>';
+        echo "<script>window.location.href ='index.php'</script> ";
     } else {
         echo '<script>alert("Tên đăng nhập hoặc mật khẩu không phải tài khoản admin")</script>';
-        header('location:login.php');
-        
+        echo " <script>window.location.href ='login.php'</script> ";
+        //  header('location:login.php');
+
     }
 }
 ?>
